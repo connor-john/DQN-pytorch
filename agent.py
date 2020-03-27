@@ -12,7 +12,7 @@ import numpy as np
 from DQN import DQN
 from agent_memory import ReplayBuffer
 
-# Agent to learn
+# Agent to manage learning and networks
 # Some parameters differ from paper due to learning on a lower scale
 class Agent():
     def __init__(self, gamma, epsilon, lr, n_actions, input_dims, mem_size, batch_size, eps_min = 0.01,
@@ -39,14 +39,45 @@ class Agent():
         self.q_next = DQN(self.lr, self.n_actions, input_dims = self.input_dims, 
                      name = self.env_name + '_' + self.algo + '_' + 'q_next',
                      model_dir = self.model_dir)
-        
-    def choose_action(self, state):
     
-    def copy_target_network(self):
+    # Using epsilon greedy     
+    def choose_action(self, obs):
+        if np.random.random() > self.epsilon:
+            state = torch.Tensor([obs], dtype = torch.float).to(self.q.device)
+            actions = self.q.forward(state)
+            action = torch.argmax(actions).item()
+        else:
+            action = np.random.choice(self.action_space)
+        
+        return action
+    
+    def store_transition(self, state, action, reward, state_, done):
+        self.memory.store_transition(state, action, reward, state_, done)
+    
+    def sample_memory(self):
+        state, action, reward, new_state, done = self.memory.sample_memory(self.batch_size)
+        
+        states = torch.tensor(state).to(self.q.device)
+        rewards = torch.tensor(rewards).to(self.q.device)
+        dones = torch.tensor(done).to(self.q.device)
+        actions = torch.tensor(action).to(self.q.device)
+        states_ = torch.tensor(new_state).to(self.q.device)
+        
+        return states, actions, rewards, states_, dones
+    
+    def replace_target_network(self):
+        if self.learn_counter % self.replace == 0:
+            self.q_next.load_state_dict(self.q.state_dict())
         
     def decrease_eps(self):
+        self.epsilon = self.epsilon - self.eps_dec if self.epsilon > self.eps_min else self.eps_min
     
     def learn(self):
     
-    def store_memory(self):
+    def save_models(self):
+        self.q.save_model()
+        self.q_next.save_model()
     
+    def load_models(self):
+        self.q.load_model()
+        self.q_next.load_model()
