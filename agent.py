@@ -58,7 +58,7 @@ class Agent():
         state, action, reward, new_state, done = self.memory.sample_memory(self.batch_size)
         
         states = torch.tensor(state).to(self.q.device)
-        rewards = torch.tensor(rewards).to(self.q.device)
+        rewards = torch.tensor(reward).to(self.q.device)
         dones = torch.tensor(done).to(self.q.device)
         actions = torch.tensor(action).to(self.q.device)
         states_ = torch.tensor(new_state).to(self.q.device)
@@ -73,6 +73,27 @@ class Agent():
         self.epsilon = self.epsilon - self.eps_dec if self.epsilon > self.eps_min else self.eps_min
     
     def learn(self):
+        if self.memory.mem_cn < self.batch_size:
+            return
+        
+        self.q.zero_grad()
+        self.replace_target_network()
+        
+        states, actions, rewards, states_, dones = self.sample_memory()
+        
+        index = np.arange(self.batch_size)
+        q_pred = self.q.forward(states)[index, actions]
+        q_next = self.q_next.forward(states_).max(dim = 1)[0]
+        
+        q_next[dones] = 0.0
+        q_target = rewards + self.gamma * q_next
+        
+        loss = self.q.loss(q_target, q_pred).to(self.q.device)
+        loss.backward()
+        self.q.optimizer.step()
+        self.learn_counter += 1
+        
+        self.decrease_eps()
     
     def save_models(self):
         self.q.save_model()
