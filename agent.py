@@ -35,10 +35,10 @@ class Agent():
         self.memory = ReplayBuffer(mem_size, input_dims, n_actions)
         self.q = DQN(self.lr, self.n_actions, input_dims = self.input_dims, 
                      name = self.env_name + '_' + self.algo + '_' + 'q',
-                     model_dir = self.model_dir)
+                     model_dir = self.dir)
         self.q_next = DQN(self.lr, self.n_actions, input_dims = self.input_dims, 
                      name = self.env_name + '_' + self.algo + '_' + 'q_next',
-                     model_dir = self.model_dir)
+                     model_dir = self.dir)
     
     # Using epsilon greedy     
     def choose_action(self, obs):

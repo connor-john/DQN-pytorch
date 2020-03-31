@@ -22,9 +22,9 @@ class DQN(nn.Module):
         self.directory = model_dir
         self.file = os.path.join(self.directory, name)
         
-        self.cv1 = nn.Conv2d(input_dims[0], 32, kernal_size = 8, stride = 4)
-        self.cv2 = nn.Conv2d(32, 64, kernal_size = 4, stride = 2)
-        self.cv3 = nn.Conv2d(64, 64, kernal_size = 3)
+        self.cv1 = nn.Conv2d(input_dims[0], 32, kernel_size = 8, stride = 4)
+        self.cv2 = nn.Conv2d(32, 64, kernel_size = 4, stride = 2)
+        self.cv3 = nn.Conv2d(64, 64, kernel_size = 3)
         
         fc_input = self.conv_output_dims(input_dims)
         
@@ -52,8 +52,8 @@ class DQN(nn.Module):
     def conv_output_dims(self, input_dims):
         state = torch.zeros(1, *input_dims)
         dims = self.cv1(state)
-        dims = self.cv2(state)
-        dims = self.cv3(state)
+        dims = self.cv2(dims)
+        dims = self.cv3(dims)
         
         return int(np.prod(dims.siz()))
     
