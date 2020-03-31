@@ -71,7 +71,8 @@ class Agent():
         
     def decrease_eps(self):
         self.epsilon = self.epsilon - self.eps_dec if self.epsilon > self.eps_min else self.eps_min
-    
+        
+        
     def learn(self):
         if self.memory.mem_cn < self.batch_size:
             return

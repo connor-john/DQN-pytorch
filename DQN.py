@@ -40,7 +40,7 @@ class DQN(nn.Module):
     def forward(self, state):
         cv1 = F.relu(self.cv1(state))
         cv2 = F.relu(self.cv2(cv1))
-        cv3 = F.relu(self.cv2(cv2))
+        cv3 = F.relu(self.cv3(cv2))
         
         #reshape output for Fully connected layer
         conv_state = cv3.view(cv3.size()[0], -1)
@@ -55,7 +55,7 @@ class DQN(nn.Module):
         dims = self.cv2(dims)
         dims = self.cv3(dims)
         
-        return int(np.prod(dims.siz()))
+        return int(np.prod(dims.size()))
     
     def save_model(self):
         print('Saving Model.....')

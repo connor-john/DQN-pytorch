@@ -48,7 +48,7 @@ if __name__ == '__main__':
             
             if not load:
                 agent.store_transition(observation, action, reward, observation_, int(done))
-                agent.learn
+                agent.learn()
             
             observation = observation_
             n_steps += 1
