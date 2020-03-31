@@ -43,7 +43,7 @@ class Agent():
     # Using epsilon greedy     
     def choose_action(self, obs):
         if np.random.random() > self.epsilon:
-            state = torch.Tensor([obs], dtype = torch.float).to(self.q.device)
+            state = torch.tensor([obs], dtype = torch.float).to(self.q.device)
             actions = self.q.forward(state)
             action = torch.argmax(actions).item()
         else:
