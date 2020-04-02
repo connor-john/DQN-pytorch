@@ -7,7 +7,7 @@
  ### DQN
  Implementation of [Human-level control through deep reinforcement learning](https://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf)
  #### Summary
- Intoducing Convolutional Layers and a memory network will allow the DQN to perform better than a standard linear DQN
+ Using a convolutional neural network to take inputs, as well introducing a network termed experience replay, and only periodically updating the _Q-value_ will allow the DQN to perform better than a standard naive DQN
  #### Results
  **Pong** results of DQN trained on 500 episodes<br>
 <img src ="DQN/plots/DQN_PongNoFrameSkip-v4_lr0.0001_500games.png" width = 450>
