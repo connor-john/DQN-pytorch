@@ -11,3 +11,10 @@
  #### Results
  **Pong** results of DQN trained on 500 episodes<br>
 <img src ="DQN/plots/DQN_PongNoFrameSkip-v4_lr0.0001_500games.png" width = 450>
+
+ ### DDQN
+ Implementation of [Deep Reinforcement Learning with Double Q-learning](https://arxiv.org/pdf/1509.06461.pdf)
+ #### Summary
+ Fix DQN's over-estimation of some action values by decoupling the selection from the evaluation of an action
+ #### Results
+--- results comparison here
